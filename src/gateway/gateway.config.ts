@@ -11,6 +11,7 @@ interface GatewaySettings {
     routes: {
         [routeName: string]: {
             clusterName: string,
+            authorization: boolean,
             match: {
                 path: string,
                 methods: string[];

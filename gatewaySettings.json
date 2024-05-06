@@ -1,8 +1,25 @@
 {
     "routes": {
-        "default": {}
-    },
-    "clusters": {
-        "default": {}
+        "moviesRead": {
+            "clusterName": "movies",
+            "match": {
+                "path": "/movies/*",
+                "methods": ["GET"]
+            },
+            "Transforms": [{
+                "pathPattern": "api/movies"
+            }]
+        },
+        "moviesWrite": {
+            "clusterName": "movies",
+            "authorization": true,
+            "match": {
+                "path": "/movies/*",
+                "methods": ["POST", "PUT", "DELETE"]
+            },
+            "Transforms": [{
+                "pathPattern": "api/movies"
+            }]
+        }
     }
 }
