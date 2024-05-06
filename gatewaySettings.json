@@ -3,7 +3,7 @@
         "moviesRead": {
             "clusterName": "movies",
             "match": {
-                "path": "/movies/*",
+                "path": "/movies",
                 "methods": ["GET"]
             },
             "Transforms": [{
@@ -14,12 +14,12 @@
             "clusterName": "movies",
             "authorization": true,
             "match": {
-                "path": "/movies/*",
+                "path": "/movies",
                 "methods": ["POST", "PUT", "DELETE"]
             },
-            "Transforms": [{
+            "Transforms": {
                 "pathPattern": "api/movies"
-            }]
+            }
         }
     }
 }

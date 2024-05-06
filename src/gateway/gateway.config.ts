@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+import { RouterModule } from '@nestjs/core';
 const fs = require('fs');
 
 
@@ -11,21 +12,31 @@ interface GatewaySettings {
     routes: {
         [routeName: string]: {
             clusterName: string,
-            authorization: boolean,
+            authorization?: boolean,
             match: {
                 path: string,
                 methods: string[];
             },
             transforms?: {
                 pathPattern: string
-            }[]
+            }
+        }
+    }
+}
+
+interface RoutesTable {
+    [url: string]: {
+        [method: string]: {
+            authorization: boolean,
+            forwardUrls: string[],
         }
     }
 }
 
 @Injectable()
 export class GatewayConfiguration {
-    public readonly gatewaySettings: GatewaySettings;
+    private readonly gatewaySettings: GatewaySettings;
+    public readonly routesTable: RoutesTable;
 
     private readonly gatewaySettingsBaseFileName = 'gatewaySettings';
     private readonly gatewaySettingsBaseFileExtension = 'json';
@@ -34,6 +45,7 @@ export class GatewayConfiguration {
         if (!this.gatewaySettings) {
             this.gatewaySettings = this.loadSettings();
             this.settingsHealth();
+            this.routesTable = this.mapRoutes();
         }
     }
 
@@ -45,6 +57,30 @@ export class GatewayConfiguration {
         const defaultSettings = JSON.parse(fs.readFileSync(this.getSettingsFileName(), 'utf-8'));
         const environmentSettings = JSON.parse(fs.readFileSync(this.getSettingsFileName(process.env.NODE_ENV), 'utf-8'));
         return { ...defaultSettings, ...environmentSettings } as GatewaySettings;
+    }
+
+    private mapRoutes() : RoutesTable {
+        const table = {} as RoutesTable;
+        
+        for (let [route, value] of Object.entries(this.gatewaySettings.routes)) {
+            const path = value.match.path;
+            if (!(path in table)) table[path] = {}
+
+            for (let method of value.match.methods) {
+                table[path][method] = {
+                    authorization: Boolean(value.authorization),
+                    forwardUrls: this.getRoutesWithClusterHost(value.clusterName, path, value.transforms?.pathPattern)
+                }
+            }
+        }   
+
+        return table;
+    }
+
+    private getRoutesWithClusterHost(clusterName: string, url: string, transform?: string) : string[] {
+        return this.gatewaySettings.clusters[clusterName].destinations.map((destination: string) => {
+            return `${destination}${transform ? transform : url}`
+        });
     }
 
     private settingsHealth() : void {

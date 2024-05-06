@@ -1,7 +1,9 @@
 {
     "clusters": {
-        "movies": [
-            "http://localhost:7000"
-        ]
+        "movies": {
+            "destinations": [
+                "http://localhost:7000"
+            ]
+        }
     }
 }

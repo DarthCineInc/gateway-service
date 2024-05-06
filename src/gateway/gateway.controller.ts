@@ -8,8 +8,7 @@ export class GatewayController {
     constructor(private gatewayService: GatewayService) {}
 
     reverseProxy(req: Request, res: Response, next: NextFunction) {
-        console.log(process.env.NODE_ENV)
-        return res.json(this.gatewayService.index());
+        return res.json(this.gatewayService.forwardRequest(req, res));
     }
 
 }
