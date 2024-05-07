@@ -20,6 +20,27 @@
             "transforms": {
                 "pathPattern": "/api/movies"
             }
+        },
+        "cinemasRead": {
+            "clusterName": "cinemas",
+            "match": {
+                "path": "/cinemas",
+                "methods": ["GET"]
+            },
+            "transforms": {
+                "pathPattern": "/api/cinemas"
+            }
+        },
+        "cinemasWrite": {
+            "clusterName": "cinemas",
+            "authorization": true,
+            "match": {
+                "path": "/cinemas",
+                "methods": ["POST", "PUT", "DELETE"]
+            },
+            "transforms": {
+                "pathPattern": "/api/cinemas"
+            }
         }
     }
 }

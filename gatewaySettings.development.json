@@ -4,6 +4,11 @@
             "destinations": [
                 "http://localhost:7000"
             ]
+        },
+        "cinemas": {
+            "destinations": [
+                "http://localhost:7001"
+            ]
         }
     }
 }
