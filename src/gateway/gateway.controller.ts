@@ -1,4 +1,4 @@
-import { Controller, Injectable} from '@nestjs/common';
+import { Controller, Injectable, UseInterceptors} from '@nestjs/common';
 import { GatewayService } from './gateway.service';
 import { NextFunction, Request, Response } from 'express';
 

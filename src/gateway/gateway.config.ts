@@ -78,7 +78,6 @@ export class GatewayConfiguration {
     }
 
     private getRoutesWithClusterHost(clusterName: string, url: string, transform?: string) : string[] {
-        console.log(transform)
         return this.gatewaySettings.clusters[clusterName].destinations.map((destination: string) => {
             return `${destination}${transform ? transform : url}`
         });

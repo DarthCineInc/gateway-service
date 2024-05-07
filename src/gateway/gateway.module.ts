@@ -1,5 +1,5 @@
 import { MiddlewareConsumer, Module, NestModule } from '@nestjs/common';
-import { GatewayMiddleware } from './gateway.middleware';
+import { GatewayMiddleware, MultipartFormMiddleware } from './gateway.middleware';
 import { GatewayController } from './gateway.controller';
 import { GatewayService } from './gateway.service';
 import { GatewayConfiguration } from './gateway.config';
@@ -18,7 +18,10 @@ import { GatewayRequestService } from './gateway.request.service';
 export class GatewayModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
-    .apply(GatewayMiddleware)
-    .forRoutes('*')
+      .apply(MultipartFormMiddleware)
+      .forRoutes('*')
+    consumer
+      .apply(GatewayMiddleware)
+      .forRoutes('*')
   }
 }
