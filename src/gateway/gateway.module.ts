@@ -3,6 +3,7 @@ import { GatewayMiddleware } from './gateway.middleware';
 import { GatewayController } from './gateway.controller';
 import { GatewayService } from './gateway.service';
 import { GatewayConfiguration } from './gateway.config';
+import { GatewayRequestService } from './gateway.request.service';
 
 @Module({
   controllers: [],
@@ -10,7 +11,8 @@ import { GatewayConfiguration } from './gateway.config';
     GatewayController, // Used in the middleware
     GatewayService,
     GatewayMiddleware,
-    GatewayConfiguration
+    GatewayConfiguration,
+    GatewayRequestService
   ]
 })
 export class GatewayModule implements NestModule {

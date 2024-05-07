@@ -6,9 +6,9 @@
                 "path": "/movies",
                 "methods": ["GET"]
             },
-            "Transforms": [{
-                "pathPattern": "api/movies"
-            }]
+            "transforms": {
+                "pathPattern": "/api/movies"
+            }
         },
         "moviesWrite": {
             "clusterName": "movies",
@@ -17,8 +17,8 @@
                 "path": "/movies",
                 "methods": ["POST", "PUT", "DELETE"]
             },
-            "Transforms": {
-                "pathPattern": "api/movies"
+            "transforms": {
+                "pathPattern": "/api/movies"
             }
         }
     }

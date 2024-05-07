@@ -62,7 +62,7 @@ export class GatewayConfiguration {
     private mapRoutes() : RoutesTable {
         const table = {} as RoutesTable;
         
-        for (let [route, value] of Object.entries(this.gatewaySettings.routes)) {
+        for (let [_, value] of Object.entries(this.gatewaySettings.routes)) {
             const path = value.match.path;
             if (!(path in table)) table[path] = {}
 
@@ -78,6 +78,7 @@ export class GatewayConfiguration {
     }
 
     private getRoutesWithClusterHost(clusterName: string, url: string, transform?: string) : string[] {
+        console.log(transform)
         return this.gatewaySettings.clusters[clusterName].destinations.map((destination: string) => {
             return `${destination}${transform ? transform : url}`
         });

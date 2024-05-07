@@ -7,8 +7,11 @@ import { NextFunction, Request, Response } from 'express';
 export class GatewayController {
     constructor(private gatewayService: GatewayService) {}
 
-    reverseProxy(req: Request, res: Response, next: NextFunction) {
-        return res.json(this.gatewayService.forwardRequest(req, res));
+    async reverseProxy(req: Request, res: Response, next: NextFunction) {
+        if (req.originalUrl == "/favicon.ico") return "OK"; // DEV Fix
+
+        const response = await this.gatewayService.forwardRequest(req, res);
+        return res.header(response.headers).status(response.status).json(response.data);
     }
 
 }
